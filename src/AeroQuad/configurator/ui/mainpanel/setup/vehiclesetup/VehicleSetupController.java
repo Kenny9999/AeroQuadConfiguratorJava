@@ -20,7 +20,7 @@ public class VehicleSetupController implements IVehicleSetupController
     private int _reversedYawDirection = 1;
     private int _useBatteryMonitor = 0;
     private int _useGps = 0;
-    private int _escUpdateSpeed = 10000;
+    private String _loopTime = "2500";
 
 
     public VehicleSetupController(final IMessageDispatcher messageDispatcher, final ISerialCommunicator communicator)
@@ -32,8 +32,8 @@ public class VehicleSetupController implements IVehicleSetupController
         {
             public void propertyChange(final PropertyChangeEvent evt)
             {
-                final FlightConfigType flightConfigType = FlightConfigType.fromOrdinal(Integer.parseInt((String)evt.getNewValue()));
-                _panel.selectFlightConfigType(flightConfigType);
+                _flightConfigType = FlightConfigType.fromOrdinal(Integer.parseInt((String)evt.getNewValue()));
+                _panel.selectFlightConfigType(_flightConfigType);
             }
         });
 
@@ -42,8 +42,8 @@ public class VehicleSetupController implements IVehicleSetupController
             @Override
             public void propertyChange(final PropertyChangeEvent evt)
             {
-                final ReceiverType receiverType = ReceiverType.fromOrdinal(Integer.parseInt((String)evt.getNewValue()));
-                _panel.setReceiverType(receiverType);
+                _receiverType = ReceiverType.fromOrdinal(Integer.parseInt((String)evt.getNewValue()));
+                _panel.setReceiverType(_receiverType);
             }
         });
 
@@ -90,25 +90,13 @@ public class VehicleSetupController implements IVehicleSetupController
             }
         });
 
-        messageDispatcher.addListener(IMessageDispatcher.ESC_UPDATE_SPEED_KEY, new PropertyChangeListener()
+        messageDispatcher.addListener(IMessageDispatcher.LOOP_TIME_KEY, new PropertyChangeListener()
         {
             @Override
             public void propertyChange(final PropertyChangeEvent evt)
             {
-                final String speedString = (String)evt.getNewValue();
-                final int escSpeed = Integer.valueOf(speedString);
-                switch (escSpeed)
-                {
-//                    case 2000:
-//                        _panel.setEscSpeed(EscUpdateSpeed.FAST);
-//                        break;
-                    case 10000:
-                        _panel.setEscSpeed(EscUpdateSpeed.OLD_WAY);
-                        break;
-                    default:
-                        _panel.setEscSpeed(EscUpdateSpeed.NORMAL);
-                }
-
+                _loopTime = (String)evt.getNewValue();
+                _panel.setLoopTime(_loopTime);
             }
         });
 
@@ -250,20 +238,11 @@ public class VehicleSetupController implements IVehicleSetupController
     }
 
     @Override
-    public void setEscUpdateSpeed(final EscUpdateSpeed escUpdateSpeed)
+    public void setLoopTime(final String loopTime)
     {
-        switch (escUpdateSpeed)
-        {
-            case OLD_WAY:
-                _escUpdateSpeed = 10000;
-                break;
-            case NORMAL:
-                _escUpdateSpeed = 2500;
-                break;
-            default:
-                _escUpdateSpeed = 2000;
-        }
+        _loopTime = loopTime;
         sendUpdateToFlightController();
+
     }
 
     private void updateOptionVisibilityFromChannelCount(final int nbChannels)
@@ -284,7 +263,7 @@ public class VehicleSetupController implements IVehicleSetupController
         buffer.append(Integer.toString(_reversedYawDirection) + ";");
         buffer.append(Integer.toString(_useBatteryMonitor) + ";");
         buffer.append(Integer.toString(_useGps) + ";");
-        buffer.append(Integer.toString(_escUpdateSpeed) + ";");
+        buffer.append(_loopTime + ";");
 
         _communicator.sendCommand(buffer.toString());
     }

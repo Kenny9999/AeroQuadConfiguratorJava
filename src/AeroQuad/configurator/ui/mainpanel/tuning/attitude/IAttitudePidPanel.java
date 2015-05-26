@@ -12,4 +12,6 @@ public interface IAttitudePidPanel
     void setAccelPitchPid(PIDData pid);
 
     void setSinced(boolean synced);
+
+    void setAccelCutOff(String accelCutOff);
 }

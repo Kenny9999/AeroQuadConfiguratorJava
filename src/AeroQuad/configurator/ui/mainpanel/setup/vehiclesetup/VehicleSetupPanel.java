@@ -2,6 +2,7 @@ package AeroQuad.configurator.ui.mainpanel.setup.vehiclesetup;
 
 import AeroQuad.configurator.messagesdispatcher.FlightConfigType;
 import AeroQuad.configurator.messagesdispatcher.ReceiverType;
+import AeroQuad.configurator.ui.uiutils.IntegerFilterKeyAdapter;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -11,6 +12,8 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class VehicleSetupPanel extends JPanel implements IVehicleSetupPanel
 {
@@ -31,9 +34,7 @@ public class VehicleSetupPanel extends JPanel implements IVehicleSetupPanel
     private final JRadioButton _octoXRadioButton = new JRadioButton("Octo X");
     private final JRadioButton _octoPlusRadioButton = new JRadioButton("Octo +");
 
-    private final JRadioButton _oldEscUpdateSpeedRadioButton = new JRadioButton("Old Way");
-    private final JRadioButton _normalEscUpdateSpeedRadionButton = new JRadioButton("Normal");
-//    private final JRadioButton _fastEscUpdateSpeedRadioButton = new JRadioButton("Fast (SimonK, BlHeli)");
+    private final JTextField _loopTimeTextField = new JTextField("2500");
 
     private final JCheckBox _reverseYawCheckBox = new JCheckBox("Reverse Yaw");
     private final JCheckBox _batteriMonitorCheckBox = new JCheckBox("Batterie monitor");
@@ -78,7 +79,7 @@ public class VehicleSetupPanel extends JPanel implements IVehicleSetupPanel
         final JPanel motorConfigPanel = createMotorConfigPanel();
         middlePanel.add(motorConfigPanel);
 
-        final JPanel escUpdateSpeedPanel = createEscUpdateSpeedPanel();
+        final JPanel escUpdateSpeedPanel = createLoopTimePanel();
         middlePanel.add(escUpdateSpeedPanel);
 
         final JPanel otherOptionPanel = createOtherOptionPanel();
@@ -86,8 +87,6 @@ public class VehicleSetupPanel extends JPanel implements IVehicleSetupPanel
 
         bindActions();
     }
-
-
 
     private JPanel createReceiverPanel()
     {
@@ -159,25 +158,20 @@ public class VehicleSetupPanel extends JPanel implements IVehicleSetupPanel
         return otherOptions;
     }
 
-    private JPanel createEscUpdateSpeedPanel()
+    private JPanel createLoopTimePanel()
     {
-        final JPanel escUpdateSpeedPanel = new JPanel(new GridLayout(1,2));
-        final TitledBorder escUpdateSpeedBorder = new TitledBorder("ESC update Speed");
-        escUpdateSpeedBorder.setTitleColor(Color.WHITE);
-        escUpdateSpeedPanel.setBorder(escUpdateSpeedBorder);
-        final ButtonGroup buttonGroup = new ButtonGroup();
-        buttonGroup.add(_oldEscUpdateSpeedRadioButton);
-        buttonGroup.add(_normalEscUpdateSpeedRadionButton);
-//        buttonGroup.add(_fastEscUpdateSpeedRadioButton);
-        escUpdateSpeedPanel.add(_oldEscUpdateSpeedRadioButton);
-        escUpdateSpeedPanel.add(_normalEscUpdateSpeedRadionButton);
-//        escUpdateSpeedPanel.add(_fastEscUpdateSpeedRadioButton);
+        final JPanel loopTimePanel = new JPanel(new GridLayout(1,5));
+        final TitledBorder LoopTimeBorder = new TitledBorder("Loop time");
+        LoopTimeBorder.setTitleColor(Color.WHITE);
+        loopTimePanel.setBorder(LoopTimeBorder);
+
+        _loopTimeTextField.addKeyListener(new IntegerFilterKeyAdapter());
+        loopTimePanel.add(_loopTimeTextField);
         final JLabel tempLabel = new JLabel();
         tempLabel.setOpaque(true);
-        tempLabel.setBackground(_oldEscUpdateSpeedRadioButton.getBackground());
-        escUpdateSpeedPanel.add(tempLabel);
+        loopTimePanel.add(tempLabel);
 
-        return escUpdateSpeedPanel;
+        return loopTimePanel;
     }
 
     private void bindActions()
@@ -288,30 +282,12 @@ public class VehicleSetupPanel extends JPanel implements IVehicleSetupPanel
             }
         });
 
-        _oldEscUpdateSpeedRadioButton.addActionListener(new ActionListener()
-        {
+        _loopTimeTextField.addKeyListener(new KeyAdapter() {
             @Override
-            public void actionPerformed(final ActionEvent e)
-            {
-                _controller.setEscUpdateSpeed(EscUpdateSpeed.OLD_WAY);
+            public void keyReleased(KeyEvent e) {
+                _controller.setLoopTime(_loopTimeTextField.getText());
             }
         });
-        _normalEscUpdateSpeedRadionButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(final ActionEvent e)
-            {
-                _controller.setEscUpdateSpeed(EscUpdateSpeed.NORMAL);
-            }
-        });
-//        _fastEscUpdateSpeedRadioButton.addActionListener(new ActionListener()
-//        {
-//            @Override
-//            public void actionPerformed(final ActionEvent e)
-//            {
-//                _controller.setEscUpdateSpeed(EscUpdateSpeed.FAST);
-//            }
-//        });
 
         _reverseYawCheckBox.addActionListener(new ActionListener()
         {
@@ -446,20 +422,8 @@ public class VehicleSetupPanel extends JPanel implements IVehicleSetupPanel
     }
 
     @Override
-    public void setEscSpeed(final EscUpdateSpeed escSpeed)
-    {
-        switch (escSpeed)
-        {
-//            case FAST:
-//                _fastEscUpdateSpeedRadioButton.setSelected(true);
-//                break;
-            case OLD_WAY:
-                _oldEscUpdateSpeedRadioButton.setSelected(true);
-                break;
-            case NORMAL:
-                _normalEscUpdateSpeedRadionButton.setSelected(true);
-                break;
-        }
+    public void setLoopTime(final String loopTime) {
+        _loopTimeTextField.setText(loopTime);
     }
 
 

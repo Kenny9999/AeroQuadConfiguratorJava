@@ -3,6 +3,7 @@ package AeroQuad.configurator.ui.mainpanel.tuning.attitude;
 import AeroQuad.configurator.messagesdispatcher.PIDData;
 import AeroQuad.configurator.ui.mainpanel.tuning.UserLevel;
 import AeroQuad.configurator.ui.mainpanel.tuning.pidpanel.PidPanel;
+import AeroQuad.configurator.ui.mainpanel.tuning.singleparamconfigpanel.SingleParamConfigPanel;
 import AeroQuad.configurator.ui.mainpanel.tuning.syncedstate.SyncedStatePanel;
 import AeroQuad.configurator.ui.uiutils.UiUtils;
 
@@ -25,6 +26,7 @@ public class AttitudePidPanel extends JPanel implements IAttitudePidPanel
 
     private final PidPanel _accelRollPidPanel = new PidPanel("Accel Roll");
     private final PidPanel _accelPitchPidPanel = new PidPanel("Accel Pitch");
+    private final SingleParamConfigPanel _accelCutOffPanel = new SingleParamConfigPanel("<HTML><CENTER>Accel<BR>Cut Off</CENTER></HTML>");
     private final JButton _resetDefaultButton = new JButton("<HTML><CENTER>Reset<BR>Default</CENTER></HTML>");
     private final SyncedStatePanel _syncStatePanel = new SyncedStatePanel();
     private UserLevel _userLevel = UserLevel.Beginner;
@@ -56,11 +58,9 @@ public class AttitudePidPanel extends JPanel implements IAttitudePidPanel
         mainPanel.add(_centerPanel, BorderLayout.CENTER);
         add(mainPanel, BorderLayout.WEST);
 
-        _accelRollPidPanel.addActionListener(new ActionListener()
-        {
+        _accelRollPidPanel.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(final ActionEvent e)
-            {
+            public void actionPerformed(final ActionEvent e) {
                 _controller.userAccelRollPidChanged(_accelRollPidPanel.getPid());
             }
         });
@@ -73,6 +73,12 @@ public class AttitudePidPanel extends JPanel implements IAttitudePidPanel
                 _controller.userAccelPitchPidChanged(_accelPitchPidPanel.getPid());
             }
         });
+        _accelCutOffPanel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                _controller.userAccelCutOffChanged(_accelCutOffPanel.getText());
+            }
+        });
         _resetDefaultButton.addActionListener(new ActionListener()
         {
             @Override
@@ -81,6 +87,7 @@ public class AttitudePidPanel extends JPanel implements IAttitudePidPanel
                 _controller.userDefaultButtonPressed();
             }
         });
+
     }
 
     @Override
@@ -106,6 +113,11 @@ public class AttitudePidPanel extends JPanel implements IAttitudePidPanel
     public void setSinced(final boolean synced)
     {
         _syncStatePanel.setSynced(synced);
+    }
+
+    @Override
+    public void setAccelCutOff(final String accelCutOff) {
+        _accelCutOffPanel.setText(accelCutOff);
     }
 
     private void updateCenterPanelFromUserLevel()
@@ -140,6 +152,7 @@ public class AttitudePidPanel extends JPanel implements IAttitudePidPanel
 
             _accelPitchPidPanel.setIVisible(false);
             _accelPitchPidPanel.setDVisible(false);
+            _centerPanel.add(_accelCutOffPanel);
         }
 
         _centerPanel.add(_resetDefaultButton);

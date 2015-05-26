@@ -1,5 +1,7 @@
 package AeroQuad.configurator.messagesdispatcher;
 
+import AeroQuad.configurator.ui.uiutils.UiUtils;
+
 public class PIDData
 {
     private final String _p;
@@ -68,32 +70,15 @@ public class PIDData
             return false;
         }
         final PIDData other = (PIDData)obj;
-        if (!areStringToDoubleEquals(other._p, _p))
+        if (!UiUtils.areStringToDoubleEquals(other._p, _p))
         {
             return false;
         }
-        if (!areStringToDoubleEquals(other._i, _i))
+        if (!UiUtils.areStringToDoubleEquals(other._i, _i))
         {
             return false;
         }
-        return areStringToDoubleEquals(other._d,_d);
-    }
-
-    private boolean areStringToDoubleEquals(final String number1String, final String number2String)
-    {
-        try
-        {
-            final double number1 = Double.valueOf(number1String);
-            final double number2 = Double.valueOf(number2String);
-            if (number1 == number2)
-            {
-                return true;
-            }
-        }
-        catch (final Exception e)
-        {
-        }
-        return false;
+        return UiUtils.areStringToDoubleEquals(other._d, _d);
     }
 
     public PIDData getCopy()

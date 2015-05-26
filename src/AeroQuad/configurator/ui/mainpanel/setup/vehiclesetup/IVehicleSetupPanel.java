@@ -29,5 +29,5 @@ public interface IVehicleSetupPanel
 
     void setUseGps(boolean useGps);
 
-    void setEscSpeed(EscUpdateSpeed escSpeed);
+    void setLoopTime(String escSpeed);
 }

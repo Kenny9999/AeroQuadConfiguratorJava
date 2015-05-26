@@ -1,5 +1,7 @@
 package AeroQuad.configurator.messagesdispatcher;
 
+import AeroQuad.configurator.ui.uiutils.UiUtils;
+
 public class AccroPidData
 {
     private PIDData _rollPidData = new PIDData();
@@ -73,11 +75,11 @@ public class AccroPidData
         {
             return false;
         }
-        if (!_stickScaling.equals(other._stickScaling))
+        if (!UiUtils.areStringToDoubleEquals(_stickScaling, other._stickScaling))
         {
             return false;
         }
-        if (!_throttlePIDAdjustment.equals(other._throttlePIDAdjustment))
+        if (!UiUtils.areStringToDoubleEquals(_throttlePIDAdjustment, other._throttlePIDAdjustment))
         {
             return false;
         }

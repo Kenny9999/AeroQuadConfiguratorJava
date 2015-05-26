@@ -47,6 +47,7 @@ public class AttitudePidPanelController implements IAttitudePidPanelController
     {
         _panel.setAccelPitchPid(attitudePidData.getAccelPitchPid());
         _panel.setAccelRollPid(attitudePidData.getAccelRollPid());
+        _panel.setAccelCutOff(attitudePidData.getAccelCutOff());
     }
 
     @Override
@@ -88,7 +89,7 @@ public class AttitudePidPanelController implements IAttitudePidPanelController
             buffer.append("0.00;");
             buffer.append("0.00;");
         }
-
+        buffer.append(_userAttitudePidData.getAccelCutOff());
         return buffer.toString();
     }
 
@@ -100,8 +101,7 @@ public class AttitudePidPanelController implements IAttitudePidPanelController
         final String accelD = System.getProperty(DEFAULT_PID_ACCEL_D);
         final PIDData accelPid = new PIDData(accelP,accelI,accelD);
 
-
-        _userAttitudePidData = new AttitudePidData(accelPid, accelPid.getCopy());
+        _userAttitudePidData = new AttitudePidData(accelPid, accelPid.getCopy(), "0.0");
         updatePanelFromPidData(_userAttitudePidData);
     }
 
@@ -135,6 +135,11 @@ public class AttitudePidPanelController implements IAttitudePidPanelController
     public void userAccelPitchPidChanged(final PIDData pid)
     {
         _userAttitudePidData.setAccelPitchPid(pid);
+    }
+
+    @Override
+    public void userAccelCutOffChanged(final String accelCutOff) {
+        _userAttitudePidData.setAccelCutOff(accelCutOff);
     }
 
     @Override

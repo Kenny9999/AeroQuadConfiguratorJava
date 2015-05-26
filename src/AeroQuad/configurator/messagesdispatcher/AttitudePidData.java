@@ -4,17 +4,17 @@ public class AttitudePidData
 {
     private PIDData _accelRollPid = new PIDData();
     private PIDData _accelPitchPid = new PIDData();
+    private String _accelCutOff = "0.0";
 
-    public AttitudePidData()
-    {
-
-    }
+    public AttitudePidData() {}
 
     public AttitudePidData(final PIDData accelRollPid,
-                           final PIDData accelPitchPid)
+                           final PIDData accelPitchPid,
+                           final String accelCutOff)
     {
         _accelRollPid = accelRollPid;
         _accelPitchPid = accelPitchPid;
+        _accelCutOff = accelCutOff;
     }
 
     @Override
@@ -31,6 +31,9 @@ public class AttitudePidData
         }
         if (!_accelPitchPid.equals(other._accelPitchPid))
         {
+            return false;
+        }
+        if (!_accelCutOff.equals(other._accelCutOff)) {
             return false;
         }
         return true;
@@ -59,6 +62,15 @@ public class AttitudePidData
     public AttitudePidData getCopy()
     {
         return new AttitudePidData(_accelRollPid.getCopy(),
-                                   _accelPitchPid.getCopy());
+                                   _accelPitchPid.getCopy(),
+                                   _accelCutOff);
+    }
+
+    public String getAccelCutOff() {
+        return _accelCutOff;
+    }
+
+    public void setAccelCutOff(final String accelCutOff) {
+        _accelCutOff = accelCutOff;
     }
 }

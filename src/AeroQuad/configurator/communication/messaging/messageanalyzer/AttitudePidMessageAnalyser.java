@@ -23,8 +23,9 @@ public class AttitudePidMessageAnalyser implements IMessageAnalyser
 
             final PIDData accelRollPid = new PIDData(splittedData[0], splittedData[1], splittedData[2]);
             final PIDData accelPitchPid = new PIDData(splittedData[3], splittedData[4], splittedData[5]);
+            final String accelCutOff =  splittedData[6];
 
-            final AttitudePidData attitudePidData = new AttitudePidData(accelRollPid, accelPitchPid);
+            final AttitudePidData attitudePidData = new AttitudePidData(accelRollPid, accelPitchPid, accelCutOff);
             _messageDispatcher.dispatchMessage(IMessageDispatcher.ATTITUDE_PID_DATA_KEY, attitudePidData);
 
         }

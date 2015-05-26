@@ -18,9 +18,7 @@ import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.InsetsUIResource;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.util.LinkedList;
 
 public class AQConfiguratorMainFrame extends JFrame
@@ -36,6 +34,13 @@ public class AQConfiguratorMainFrame extends JFrame
 
     private static void initLookAndFeelUi()
     {
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         // Panel
         UIManager.put("Panel.background", UiUtils.DEFAULT_PANEL_BACKGROUND_COLOR);
 
@@ -123,5 +128,8 @@ public class AQConfiguratorMainFrame extends JFrame
         getContentPane().add(mainContainer);
         pack();
         setVisible(true);
+
+        final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
     }
 }

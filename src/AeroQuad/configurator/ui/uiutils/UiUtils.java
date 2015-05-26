@@ -36,4 +36,21 @@ public class UiUtils
         }
         return false;
     }
+
+    public static boolean areStringToDoubleEquals(final String number1String, final String number2String)
+    {
+        try
+        {
+            final double number1 = Double.valueOf(number1String);
+            final double number2 = Double.valueOf(number2String);
+            if (number1 == number2)
+            {
+                return true;
+            }
+        }
+        catch (final Exception e)
+        {
+        }
+        return false;
+    }
 }

@@ -137,7 +137,7 @@ public class VehicleInfoMessageAnalyser implements IMessageAnalyser
         }
         else if (datas[0].contains(ESC_UPDATE_SPEED_KEY))
         {
-            _messageDispatcher.dispatchMessage(IMessageDispatcher.ESC_UPDATE_SPEED_KEY, datas[1]);
+            _messageDispatcher.dispatchMessage(IMessageDispatcher.LOOP_TIME_KEY, datas[1]);
         }
     }
 }

@@ -25,5 +25,5 @@ public interface IVehicleSetupController
 
     void useGpsSelected(boolean selected);
 
-    void setEscUpdateSpeed(EscUpdateSpeed escUpdateSpeed);
+    void setLoopTime(String escUpdateSpeed);
 }

@@ -81,7 +81,7 @@ public interface IMessageDispatcher
 
     final String RECEIVER_TYPE_KEY = "RECEIVER_TYPE_KEY";
     final String YAW_DIRECTION_KET = "YAW_DIRECTION_KET";
-    final String ESC_UPDATE_SPEED_KEY = "ESC_UPDATE_SPEED_KEY";
+    final String LOOP_TIME_KEY = "LOOP_TIME_KEY";
 
     final String COM_PORT_LIST_UPDATE_KEY = "COM_PORT_LIST_UPDATE_KEY";
     final String SET_MENUE_ENABLED_MESSAGE_KEY = "SET_MENUE_ENABLED_MESSAGE_KEY";
